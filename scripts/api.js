@@ -6,5 +6,11 @@ let api = (function() {
   function getItems() {
     return fetch(`${BASE_URL}/items`);
   }
-  return { getItems };
+  
+
+  function createItem(name){
+    let newItem = JSON.stringify({name});
+    return fetch(`${BASE_URL}/items`, { 'method': 'POST', 'headers': {'Content-Type': 'application/json'}, 'body': newItem});
+  } 
+  return { createItem, getItems };
 })();
