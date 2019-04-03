@@ -7,18 +7,23 @@ $(document).ready(function() {
   shoppingList.render();
 });
 
-store.items.push(Item.create('apples'));
-
-api.getItems().then(response => response.json());
+api
+  .getItems()
+  .then(response => response.json())
+  .then(items => {
+    items.forEach(item => store.addItem(item));
+    shoppingList.render();
+  });
 
 console.log(api.BASE_URL);
 
-api.createItem('pears')
+api
+  .createItem('pears')
   .then(res => res.json())
-  .then((newItem) => {
+  .then(newItem => {
     return api.getItems();
   })
   .then(res => res.json())
-  .then((items) => {
+  .then(items => {
     console.log(items);
   });
