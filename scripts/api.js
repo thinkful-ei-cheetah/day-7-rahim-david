@@ -1,10 +1,10 @@
 'use strict';
 
-let api = (function(){
+let api = (function() {
   const BASE_URL = 'https://thinkful-list-api.herokuapp.com/david';
-  function getItems(){
-    return Promise.resolve('A successful response!');
-  }
-  return {getItems};
-})();
 
+  function getItems() {
+    return fetch(`${BASE_URL}/items`);
+  }
+  return { getItems };
+})();
