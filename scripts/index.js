@@ -11,10 +11,9 @@ api
   .getItems()
   .then(res => res.json())
   .then(items => {
-    const item = items[0];
-    return api.updateItem(item.id, { name: 'foobar' });
-  })
-  .then(res => res.json())
+    items.forEach(item => store.addItem(item));
+    shoppingList.render();
+  }) 
   .then(() => console.log('updated!'));
 
 console.log(api.BASE_URL);

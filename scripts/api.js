@@ -23,5 +23,18 @@ let api = (function() {
       body: JSON.stringify(updateData)
     });
   }
+  // function findAndUpdate(id, newData){
+  //   try {
+  //     Item.validateName(newData);
+  //     const item = this.findById(id);
+  //     item.name = newData;
+  //   } catch (e) {
+  //     console.log('Cannot update name: ' + e.message);
+  //   }
+  //   const item = this.items.findById(id);
+  //   item.checked = !item.checked;
+  //   Object.assign(newData, item);
+  // }
+
   return { createItem, getItems, updateItem };
 })();
