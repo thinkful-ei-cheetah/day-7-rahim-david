@@ -3,14 +3,14 @@
 /* global store, $ */
 
 // eslint-disable-next-line no-unused-vars
-const shoppingList = (function() {
+const shoppingList = (function () {
   function generateItemElement(item) {
     const checkedClass = item.checked ? 'shopping-item__checked' : '';
     const editBtnStatus = item.checked ? 'disabled' : '';
 
     let itemTitle = `<span class="shopping-item ${checkedClass}">${
       item.name
-    }</span>`;
+      }</span>`;
     if (item.isEditing) {
       itemTitle = `
         <form class="js-edit-item">
@@ -62,7 +62,7 @@ const shoppingList = (function() {
   }
 
   function handleNewItemSubmit() {
-    $('#js-shopping-list-form').submit(function(event) {
+    $('#js-shopping-list-form').submit(function (event) {
       event.preventDefault();
       const newItemName = $('.js-shopping-list-entry').val();
       $('.js-shopping-list-entry').val('');
@@ -89,10 +89,8 @@ const shoppingList = (function() {
     $('.js-shopping-list').on('click', '.js-item-toggle', event => {
       const id = getItemIdFromElement(event.currentTarget);
       const uncheckedItem = store.findById(id);
-      !uncheckedItem.checked;
-      api.updateItem(id, { checked: !uncheckedItem.checked }).then(() => {
-        store.findAndUpdate(id, { checked: !uncheckedItem.checked });
-      });
+      api.updateItem(id, { checked: !uncheckedItem.checked });
+      store.findAndUpdate(id, { checked: !uncheckedItem.checked });
       // api.updateItem(id, {checked: });
       // store.findAndUpdate(id, {checked:}
       render();
