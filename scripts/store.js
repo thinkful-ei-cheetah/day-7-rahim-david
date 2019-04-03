@@ -54,6 +54,10 @@ const store = (function() {
     this.searchTerm = term;
   };
 
+  const setError = function(){
+    
+  }
+
   return {
     items: [],
     hideCheckedItems: false,

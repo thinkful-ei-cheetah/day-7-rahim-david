@@ -23,6 +23,14 @@ let api = (function() {
       body: JSON.stringify(updateData)
     });
   }
+
+  function deleteItem(id){
+    return fetch(`${BASE_URL}/items/${id}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: ''
+    });
+  }
   // function findAndUpdate(id, newData){
   //   try {
   //     Item.validateName(newData);
@@ -36,5 +44,5 @@ let api = (function() {
   //   Object.assign(newData, item);
   // }
 
-  return { createItem, getItems, updateItem };
+  return { createItem, getItems, updateItem, deleteItem };
 })();

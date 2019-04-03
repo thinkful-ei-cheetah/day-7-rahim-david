@@ -74,6 +74,9 @@ const shoppingList = (function () {
         .then(newItem => {
           store.addItem(newItem);
           render();
+        })
+        .catch(err =>{
+          store.setError(err.message);
         });
       render();
     });
@@ -103,6 +106,11 @@ const shoppingList = (function () {
       // get the index of the item in store.items
       const id = getItemIdFromElement(event.currentTarget);
       // delete the item
+      try {
+        api.deleteItem(id);
+      } catch (error) {
+        console.log(error);
+      }
       store.findAndDelete(id);
       // render the updated shopping list
       render();
