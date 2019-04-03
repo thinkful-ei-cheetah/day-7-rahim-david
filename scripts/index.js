@@ -12,8 +12,17 @@ api
   .then(res => res.json())
   .then(items => {
     items.forEach(item => store.addItem(item));
-    shoppingList.render();
+    const item = store.items[0];
+    console.log('current name: ', item);
+    store.findAndUpdate(item.id, { name: 'foobar3' });
+    console.log('new name: ', item);
   }) 
+  .then(() => {
+    const item = store.items[0];
+    shoppingList.render();
+    return api.updateItem(item.id, { name: 'foobar3' });
+  })
+  .then(res => res.json())
   .then(() => console.log('updated!'));
 
 console.log(api.BASE_URL);
