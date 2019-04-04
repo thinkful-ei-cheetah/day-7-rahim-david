@@ -1,6 +1,6 @@
 'use strict';
 
-/* global store, $ */
+/* global store, $, api */
 
 // eslint-disable-next-line no-unused-vars
 const shoppingList = (function () {
@@ -10,7 +10,7 @@ const shoppingList = (function () {
 
     let itemTitle = `<span class="shopping-item ${checkedClass}">${
       item.name
-      }</span>`;
+    }</span>`;
     if (item.isEditing) {
       itemTitle = `
         <form class="js-edit-item">
@@ -70,15 +70,21 @@ const shoppingList = (function () {
 
       api
         .createItem(newItemName)
-        .then(response => response.json())
+        .then(response => {
+          console.log(response);
+          if (!response.ok) {
+            let error = response.json()
+              .then((jsonResponse) => {
+                return jsonResponse.message;
+              });
+            throw error;
+          }
+          return response.json();
+        })
         .then(newItem => {
           store.addItem(newItem);
           render();
-        })
-        .catch(err =>{
-          store.setError(err.message);
         });
-      render();
     });
   }
 
@@ -92,11 +98,23 @@ const shoppingList = (function () {
     $('.js-shopping-list').on('click', '.js-item-toggle', event => {
       const id = getItemIdFromElement(event.currentTarget);
       const uncheckedItem = store.findById(id);
-      api.updateItem(id, { checked: !uncheckedItem.checked });
-      store.findAndUpdate(id, { checked: !uncheckedItem.checked });
+      api.updateItem(id, { checked: !uncheckedItem.checked })
+        .then((response) => {
+          console.log(response);
+          if (!response.ok) {
+            let error = response.json()
+              .then((jsonResponse) => {
+                return jsonResponse.message;
+              });
+            throw error;
+          }
+          store.findAndUpdate(id, { checked: !uncheckedItem.checked });
+          render();
+        });
+      // store.findAndUpdate(id, { checked: !uncheckedItem.checked });
       // api.updateItem(id, {checked: });
       // store.findAndUpdate(id, {checked:}
-      render();
+      // render();
     });
   }
 
@@ -106,14 +124,23 @@ const shoppingList = (function () {
       // get the index of the item in store.items
       const id = getItemIdFromElement(event.currentTarget);
       // delete the item
-      try {
-        api.deleteItem(id);
-      } catch (error) {
-        console.log(error);
-      }
-      store.findAndDelete(id);
+      api.deleteItem(id)
+        .then((response) => {
+          console.log(response);
+          if (!response.ok) {
+            let error = response.json()
+              .then((jsonResponse) => {
+                return jsonResponse.message;
+              });
+            throw error;
+          }
+          store.findAndDelete(id);
+          render();
+        })
+        .catch((error) => {
+          console.log('hi', error);
+        });
       // render the updated shopping list
-      render();
     });
   }
 
@@ -125,15 +152,25 @@ const shoppingList = (function () {
         .find('.shopping-item')
         .val();
       try {
-        api.updateItem(id, { name: itemName });
+        api.updateItem(id, { name: itemName })
+          .then((response) => {
+            console.log(response);
+            if (!response.ok) {
+              let error = response.json()
+                .then((jsonResponse) => {
+                  return jsonResponse.message;
+                });
+              throw error;
+            }
+            store.findAndUpdate(id, { name: itemName });
+            store.setItemIsEditing(id, false);
+            render();
+          });
       } catch (error) {
         console.log(error);
       }
-      console.log(itemName);
       //
-      store.findAndUpdate(id, { name: itemName });
-      store.setItemIsEditing(id, false);
-      render();
+
     });
   }
 
